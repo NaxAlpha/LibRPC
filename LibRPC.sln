@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LibRPC.Example", "LibRPC.Example\LibRPC.Example.vbproj", "{450EB581-FB0D-4EE4-8CE9-086C197D4F97}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LibRPC\LibRPC.projitems*{d36482f8-8e78-4412-8702-2d97a6cfadb9}*SharedItemsImports = 13
@@ -39,6 +41,10 @@ Global
 		{678BAA33-A729-4293-ABF6-3EF3469EE780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{678BAA33-A729-4293-ABF6-3EF3469EE780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{678BAA33-A729-4293-ABF6-3EF3469EE780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{450EB581-FB0D-4EE4-8CE9-086C197D4F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{450EB581-FB0D-4EE4-8CE9-086C197D4F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{450EB581-FB0D-4EE4-8CE9-086C197D4F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{450EB581-FB0D-4EE4-8CE9-086C197D4F97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
