@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d36482f8-8e78-4412-8702-2d97a6cfadb9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>LibRPC</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ExceptionEventHandler.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)MetaHost.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)MetaHostException.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)RPCAttribute.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)RPCHost.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)RPCHostException.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)SerializationException.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils.vb" />
+  </ItemGroup>
+</Project>
