@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>LibRPC</id>
+    <version>1.0.0</version>
+    <authors>Nauman Mustafa</authors>
+    <owners>NaxAlpha</owners>
+    <projectUrl>https://github.com/NaxAlpha/LibRPC</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/NaxAlpha/LibRPC/master/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>PHigh performance and lightweight RPC library for .Net Framework and .Net Portable</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright (C) Nauman Mustafa 2016</copyright>
+    <tags>LibRPC rpc .net c# vb remote procedure call</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="LibRPC.Desktop\bin\*\*.dll" target="lib\net461\" />
+    <file src="LibRPC.Desktop\bin\*\*.xml" target="lib\net461\" />
+    <file src="LibRPC.Desktop\bin\*\*.pdb" target="lib\net461\" />
+    
+    <file src="LibRPC.Portable\bin\*\*.dll" target="lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\" />
+    <file src="LibRPC.Portable\bin\*\*.xml" target="lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\" />
+    <file src="LibRPC.Portable\bin\*\*.pdb" target="lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\" />
+  </files>
+</package>
