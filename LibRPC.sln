@@ -13,13 +13,16 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LibRPC.Tests", "LibRPC.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7FEBD6E7-48C2-4B5A-9BC2-B0C6BF1E96C5}"
 	ProjectSection(SolutionItems) = preProject
-		icon.png = icon.png
-		nuget.exe = nuget.exe
-		Package.nuspec = Package.nuspec
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LibRPC.Example", "LibRPC.Example\LibRPC.Example.vbproj", "{450EB581-FB0D-4EE4-8CE9-086C197D4F97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{89B82F0B-A09F-43B5-9908-2B31CB139966}"
+	ProjectSection(SolutionItems) = preProject
+		Nuget\icon.png = Nuget\icon.png
+		Nuget\Package.nuspec = Nuget\Package.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
