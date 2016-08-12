@@ -29,7 +29,7 @@ we simple call server to add two numbers:
 	End Function
 ```
 
-### Basic Client
+#### Basic Client
 
 ```vb.net
 	Private Sub Client()
