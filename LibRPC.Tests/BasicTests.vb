@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.IO.Pipes
 Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
@@ -6,7 +7,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Public Class BasicTests
 
 	<TestMethod()>
-	Public Sub Test1()
+	Public Sub PipeCall()
 
 	End Sub
 

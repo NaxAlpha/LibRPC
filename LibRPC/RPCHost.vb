@@ -135,9 +135,11 @@ Public Class RPCHost
 		Return DirectCast(out, T)
 	End Function
 
+
+
 #If DESKTOP Then
 
-	Public Function CreateCaller(Of T)() As T
+	Public Function CreateProxy(Of T)() As T
 		Return MetaHost.BuildCaller(Of T)(Me)
 	End Function
 
