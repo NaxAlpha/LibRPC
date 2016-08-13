@@ -1,4 +1,7 @@
-﻿Public Class SerializationException
+﻿''' <summary>
+''' Represents exception thrown while serializing object by RPC Engine
+''' </summary>
+Public Class SerializationException
 	Inherits Exception
 
 	Public Sub New(message As String, Optional inner As Exception = Nothing)

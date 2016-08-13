@@ -2,6 +2,9 @@
 Imports System.Linq.Expressions
 Imports System.Reflection
 
+''' <summary>
+''' Represents RPC Engine to perform actions
+''' </summary>
 Public Class RPCHost
 	Implements IDisposable
 
@@ -17,7 +20,10 @@ Public Class RPCHost
 		GetType(SByte), GetType(UShort), GetType(UInteger), GetType(ULong),
 		GetType(Single), GetType(Double), GetType(Decimal), GetType(String)}
 
-	Public Event OnError As EventHandler(Of ExceptionEventHandler)
+	''' <summary>
+	''' Occures when Background worker is lost due to some error like stream closed etc.
+	''' </summary>
+	Public Event OnError As EventHandler(Of ExceptionEventArgs)
 
 	Private Sub Serialize(obj As Object)
 		Dim typ = obj.GetType()
@@ -49,6 +55,10 @@ Public Class RPCHost
 		End If
 	End Function
 
+	''' <summary>
+	''' Creates new instance of RPCEngine
+	''' </summary>
+	''' <param name="stream">The stream on which RPC calls will be sent and received</param>
 	Public Sub New(stream As Stream)
 
 		'Validation
@@ -71,7 +81,7 @@ Public Class RPCHost
 		Dim task = Utils.Async(AddressOf Worker)
 		task.Wait()
 		If task.Exception IsNot Nothing Then
-			RaiseEvent OnError(Me, New ExceptionEventHandler(task.Exception))
+			RaiseEvent OnError(Me, New ExceptionEventArgs(task.Exception))
 		End If
 	End Sub
 
@@ -115,6 +125,13 @@ Public Class RPCHost
 
 	End Sub
 
+	''' <summary>
+	''' Calls a remote host by given OpCode
+	''' </summary>
+	''' <typeparam name="T">Return type</typeparam>
+	''' <param name="opCode">OpCode of target function</param>
+	''' <param name="args">Arguments of target function</param>
+	''' <returns></returns>
 	Public Function [Call](Of T)(opCode As Short, ParamArray args() As Object) As T
 		Dim reqId = CShort(Rnd.Next(0, Short.MaxValue))
 		Utils.Locked(Requests, Sub() Requests.Add(reqId, GetType(T)))
@@ -135,16 +152,35 @@ Public Class RPCHost
 		Return DirectCast(out, T)
 	End Function
 
-
+	''' <summary>
+	''' Performs a remote procedure call asynchronously
+	''' </summary>
+	''' <typeparam name="T"></typeparam>
+	''' <param name="opCode"></param>
+	''' <param name="args"></param>
+	''' <returns></returns>
+	Public Async Function CallAsync(Of T)(opCode As Short, ParamArray args() As Object) As Task(Of T)
+		Return Await Task.Run(Function() [Call](Of T)(opCode, args))
+	End Function
 
 #If DESKTOP Then
 
+	''' <summary>
+	''' Creates a Proxy for calling remote functions using OOP manner
+	''' </summary>
+	''' <typeparam name="T">Interface type which contains functions with attribute RPCAttribute</typeparam>
+	''' <returns></returns>
 	Public Function CreateProxy(Of T)() As T
 		Return MetaHost.BuildCaller(Of T)(Me)
 	End Function
 
 #End If
 
+	''' <summary>
+	''' Adds specific handler for specific opcode
+	''' </summary>
+	''' <param name="opCode"></param>
+	''' <param name="handler"></param>
 	Public Sub [On](opCode As Short, handler As [Delegate])
 		If Targets.ContainsKey(opCode) Then
 			Targets(opCode) = handler
@@ -153,6 +189,10 @@ Public Class RPCHost
 		End If
 	End Sub
 
+	''' <summary>
+	''' An object which contains functions with RPCAttribute which are to be called when specific OpCode is received
+	''' </summary>
+	''' <param name="context"></param>
 	Public Sub LoadContext(context As Object)
 		Dim mx = context.GetType().GetRuntimeMethods().Where(AddressOf ValidateMethod)
 		For Each method In mx
@@ -173,6 +213,9 @@ Public Class RPCHost
 		Return True
 	End Function
 
+	''' <summary>
+	''' Closes base stream and unmanaged resources
+	''' </summary>
 	Public Sub Close() Implements IDisposable.Dispose
 		Output.Dispose()
 		Input.Dispose()

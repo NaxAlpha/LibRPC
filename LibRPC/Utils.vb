@@ -1,11 +1,28 @@
 ﻿Imports System.IO
 Imports System.Threading
 
+''' <summary>
+''' Contains useful APIs for handling common tasks.
+''' Also Contains Serialization Tools for RPC Host
+''' </summary>
 Public NotInheritable Class Utils
 
+	''' <summary>
+	''' Gets or sets Custom Deserializer handler for RPC Engine, if null then default is used
+	''' </summary>
+	''' <returns></returns>
 	Public Shared Property DeserializerOverride As Func(Of BinaryReader, Type, Object)
+
+	''' <summary>
+	''' Gets or sets custom serializer handler for RPC engine, if null then default is used
+	''' </summary>
+	''' <returns></returns>
 	Public Shared Property SerializerOverride As Action(Of BinaryWriter, Object)
 
+	''' <summary>
+	''' Waits for condition to be true without using 100% CPU core
+	''' </summary>
+	''' <param name="condition">Condition to be fullfilled</param>
 	Public Shared Sub WaitFor(condition As Func(Of Boolean))
 		Dim sw As New SpinWait
 		While Not condition()
@@ -13,16 +30,33 @@ Public NotInheritable Class Utils
 		End While
 	End Sub
 
+	''' <summary>
+	''' Is based on Sync Lock for locking objects using lambda
+	''' </summary>
+	''' <typeparam name="T"></typeparam>
+	''' <param name="target"></param>
+	''' <param name="action"></param>
 	Public Shared Sub Locked(Of T As Class)(target As T, action As Action)
 		SyncLock target
 			action()
 		End SyncLock
 	End Sub
 
+	''' <summary>
+	''' Runs function in separate task
+	''' </summary>
+	''' <param name="target"></param>
+	''' <returns></returns>
 	Public Shared Function Async(target As Action) As Task
 		Return Task.Run(target)
 	End Function
 
+	''' <summary>
+	''' Default deserializer handler for RPC Engine
+	''' </summary>
+	''' <param name="input"></param>
+	''' <param name="type"></param>
+	''' <returns></returns>
 	Public Shared Function DeserializeBase(input As BinaryReader, type As Type) As Object
 		If DeserializerOverride IsNot Nothing Then Return DeserializerOverride(input, type)
 		If type Is GetType(Boolean) Then
@@ -60,6 +94,11 @@ Public NotInheritable Class Utils
 		End If
 	End Function
 
+	''' <summary>
+	''' Default serializer handler for RPC Engine
+	''' </summary>
+	''' <param name="output"></param>
+	''' <param name="obj"></param>
 	Public Shared Sub SerializeBase(output As BinaryWriter, obj As Object)
 		If SerializerOverride IsNot Nothing Then SerializerOverride.Invoke(output, obj)
 		Dim type = obj.GetType()
