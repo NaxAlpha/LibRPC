@@ -15,15 +15,18 @@
     <tags>LibRPC rpc .net c# vb remote procedure call</tags>
     
     <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Sigil" />
+      </group>
     </dependencies>
     
   </metadata>
   
   <files>
     
-    <file src="..\LibRPC.Desktop\bin\*\*.dll" target="lib\net461\" />
-    <file src="..\LibRPC.Desktop\bin\*\*.xml" target="lib\net461\" />
-    <file src="..\LibRPC.Desktop\bin\*\*.pdb" target="lib\net461\" />
+    <file src="..\LibRPC.Desktop\bin\*\*.dll" target="lib\net45\" />
+    <file src="..\LibRPC.Desktop\bin\*\*.xml" target="lib\net45\" />
+    <file src="..\LibRPC.Desktop\bin\*\*.pdb" target="lib\net45\" />
     
     <file src="..\LibRPC.Portable\bin\*\*.dll" target="lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\" />
     <file src="..\LibRPC.Portable\bin\*\*.xml" target="lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\" />

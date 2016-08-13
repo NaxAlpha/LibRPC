@@ -1,8 +1,8 @@
 ## LibRPC 
 
-[![Join the chat at https://gitter.im/NaxAlpha/LibRPC](https://badges.gitter.im/NaxAlpha/LibRPC.svg)](https://gitter.im/NaxAlpha/LibRPC?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Continuous Build at https://ci.appveyor.com/project/NaxAlpha/librpc/](https://img.shields.io/appveyor/ci/NaxAlpha/librpc.svg)](https://ci.appveyor.com/project/NaxAlpha/librpc/)
-[![Download Nuget package at https://www.nuget.org/packages/LibRPC/](https://img.shields.io/nuget/v/LibRPC.svg)](https://www.nuget.org/packages/LibRPC/)
+[![Join the chat at https://gitter.im/NaxAlpha/LibRPC ](https://badges.gitter.im/NaxAlpha/LibRPC.svg)](https://gitter.im/NaxAlpha/LibRPC?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Continuous Build at https://ci.appveyor.com/project/NaxAlpha/librpc/ ](https://img.shields.io/appveyor/ci/NaxAlpha/librpc.svg)](https://ci.appveyor.com/project/NaxAlpha/librpc/)
+[![Download Nuget package at https://www.nuget.org/packages/LibRPC/ ](https://img.shields.io/nuget/v/LibRPC.svg)](https://www.nuget.org/packages/LibRPC/)
 
 LibRPC is very lightweight library for both .Net Framework and .Net Portable.
 It provides stream based RPC Framework whick makes it very light and extensible.
