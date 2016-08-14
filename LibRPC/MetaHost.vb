@@ -9,14 +9,16 @@ Friend Class MetaHost
 
 	Private Shared assemblyBuilder As AssemblyBuilder
 	Private Shared moduleBuilder As ModuleBuilder
-	Private Shared hostMethod As MethodInfo
+	Private Shared callMethod As MethodInfo
+	Private Shared callVoidMethod As MethodInfo
 	Private Shared typeCache As New Dictionary(Of Type, Type)
 
 	Shared Sub New()
 		Dim asmName As New AssemblyName("LibRPC.Meta")
 		assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.RunAndSave)
 		moduleBuilder = assemblyBuilder.DefineDynamicModule("LibRPC.Module", "LibRPC.dll")
-		hostMethod = GetType(RPCHost).GetMethod("Call")
+		callMethod = GetType(RPCHost).GetMethod("Call")
+		callVoidMethod = GetType(RPCHost).GetMethod("CallVoid")
 	End Sub
 
 	Public Shared Function BuildCaller(Of T)(host As RPCHost) As T
@@ -51,50 +53,53 @@ Friend Class MetaHost
 	Private Shared Function AddFieldAndCttr(type As TypeBuilder) As FieldInfo
 
 		Dim field = type.DefineField("owner", GetType(RPCHost), FieldAttributes.InitOnly)
-		Dim cttr = type.DefineConstructor(MethodAttributes.SpecialName Or MethodAttributes.RTSpecialName Or MethodAttributes.Public, CallingConventions.ExplicitThis, {GetType(RPCHost)})
+		Dim cttr = Sigil.NonGeneric.Emit.BuildConstructor({GetType(RPCHost)}, type, MethodAttributes.SpecialName Or MethodAttributes.RTSpecialName Or MethodAttributes.Public, CallingConventions.HasThis)
 
-		Dim il = cttr.GetILGenerator()
-		il.Emit(OpCodes.Nop)
-		il.Emit(OpCodes.Ldarg_0)
-		il.Emit(OpCodes.Ldarg_1)
-		il.Emit(OpCodes.Stfld, field)
-		il.Emit(OpCodes.Ret)
+		cttr.Nop()
+		cttr.LoadArgument(0)
+		cttr.LoadArgument(1)
+		cttr.StoreField(field)
+		cttr.Return()
 
+		cttr.CreateConstructor()
 		Return field
 	End Function
 
 	Private Shared Sub ImplementMethod(type As TypeBuilder, method As MethodInfo, owner As FieldInfo)
-
 		Dim id = method.GetCustomAttribute(Of RPCAttribute)().OpCode
 
 		Dim params = method.GetParameters().Select(Function(p) p.ParameterType).ToArray()
-		Dim mx = type.DefineMethod(method.Name, MethodAttributes.Public Or MethodAttributes.Virtual Or MethodAttributes.HideBySig, CallingConventions.ExplicitThis, method.ReturnType, params)
-		type.DefineMethodOverride(mx, method)
+		Dim mx = Sigil.NonGeneric.Emit.BuildInstanceMethod(method.ReturnType, params, type, method.Name, MethodAttributes.Public Or MethodAttributes.Final Or MethodAttributes.NewSlot Or MethodAttributes.Virtual Or MethodAttributes.HideBySig)
 
-		Dim il = mx.GetILGenerator()
-		il.Emit(OpCodes.Nop)
+		mx.Nop()
 
-		il.Emit(OpCodes.Ldarg_0)
-		il.Emit(OpCodes.Ldfld, owner)
-		il.Emit(OpCodes.Ldc_I4, CInt(id))
+		mx.LoadArgument(0)
+		mx.LoadField(owner)
+		mx.LoadConstant(id)
 
-		il.Emit(OpCodes.Ldc_I4, params.Length)
-		il.Emit(OpCodes.Newarr, GetType(Object))
+		mx.LoadConstant(params.Length)
+		mx.NewArray(Of Object)()
 
 		For i = 0 To params.Length - 1
-			il.Emit(OpCodes.Dup)
-			il.Emit(OpCodes.Ldc_I4, i)
-			il.Emit(OpCodes.Ldarg, (i + 1))
+			mx.Duplicate()
+			mx.LoadConstant(i)
+			mx.LoadArgument(i + 1)
 			If Not params(i).IsClass Then
-				il.Emit(OpCodes.Box, params(i))
+				mx.Box(params(i))
 			End If
-			il.Emit(OpCodes.Stelem_Ref)
+			mx.AsShorthand().Stelem(Of Object)()
 		Next
 
-		Dim callee = hostMethod.MakeGenericMethod(method.ReturnType)
-		il.Emit(OpCodes.Callvirt, callee)
+		If method.ReturnType Is GetType(Void) Then
+			mx.CallVirtual(callVoidMethod)
+		Else
+			Dim callee = callMethod.MakeGenericMethod(method.ReturnType)
+			mx.CallVirtual(callee)
+		End If
 
-		il.Emit(OpCodes.Ret)
+		mx.Return()
+
+		type.DefineMethodOverride(mx.CreateMethod(), method)
 	End Sub
 
 	Friend Shared Sub Save()

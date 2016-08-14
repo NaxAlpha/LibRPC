@@ -6,6 +6,10 @@ Module Server
 
 	Private clients As New LinkedList(Of RPCHost)
 
+	Private Function SumUp(x As Integer()) As Integer
+		Return x.Sum()
+	End Function
+
 	Sub Main()
 		Task.Run(AddressOf Serve)
 		Application.EnableVisualStyles()

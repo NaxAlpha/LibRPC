@@ -45,9 +45,9 @@ Public Class RPCHost
 		ElseIf type.IsArray AndAlso Primitives.Contains(type.GetElementType()) Then
 			Dim typ = type.GetElementType()
 			Dim len = Input.ReadInt32()
-			Dim dat(len - 1) As Object
+			Dim dat = Array.CreateInstance(type.GetElementType(), len)
 			For i = 0 To len - 1
-				dat(i) = Deserialize(typ)
+				dat.SetValue(Deserialize(typ), i)
 			Next
 			Return dat
 		Else
@@ -108,7 +108,7 @@ Public Class RPCHost
 				Dim paramTypes = method.GetParameters().
 					Select(Function(p) p.ParameterType).ToArray()
 
-				Dim args(paramTypes.Length - 1) As Object
+				Dim args = New Object(paramTypes.Length - 1) {}
 				For i = 0 To args.Length - 1
 					args(i) = Deserialize(paramTypes(i))
 				Next
@@ -116,7 +116,7 @@ Public Class RPCHost
 				Dim out As Object
 
 				If method.ReturnType IsNot GetType(Void) Then
-					out = code.DynamicInvoke(args.ToArray())
+					out = code.DynamicInvoke(args)
 				Else
 					out = True
 				End If
@@ -165,7 +165,7 @@ Public Class RPCHost
 	''' </summary>
 	''' <param name="opCode"></param>
 	''' <param name="args"></param>
-	Public Sub [Call](opCode As Short, ParamArray args() As Object)
+	Public Sub CallVoid(opCode As Short, ParamArray args() As Object)
 		Me.Call(Of Boolean)(opCode, args)
 	End Sub
 
@@ -188,7 +188,7 @@ Public Class RPCHost
 	''' <param name="args"></param>
 	''' <returns></returns>
 	Public Async Function CallAsync(opCode As Short, ParamArray args() As Object) As Task
-		Await Task.Run(Sub() Me.Call(opCode, args))
+		Await Task.Run(Sub() Me.CallVoid(opCode, args))
 	End Function
 
 #If DESKTOP Then
@@ -234,7 +234,6 @@ Public Class RPCHost
 	End Sub
 
 	Friend Shared Function ValidateMethod(m As MethodInfo) As Boolean
-		If m.ReturnType Is GetType(Void) Then Return False
 		If Not m.IsPublic Then Return False
 		If m.IsGenericMethod Then Return False
 		If m.GetCustomAttribute(Of RPCAttribute)(True) Is Nothing Then Return False

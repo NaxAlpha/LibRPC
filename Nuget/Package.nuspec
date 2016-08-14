@@ -11,9 +11,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>High performance, Realtime and lightweight RPC library for .Net Framework and .Net Portable</description>
     <releaseNotes>
-      Alpha 0.8
-      Added Support for Void Funcions
-      Added TCP Test
+      Alpha 0.9:
+      Added Support for Void Funcions.
+      Added Lots of Tests.
+      Converted Reflection.Emit to Sigil (complex meta generation - future plan).
+      Bugs fixed with Meta host and deserializations
     </releaseNotes>
     <copyright>Copyright (C) Nauman Mustafa</copyright>
     <tags>LibRPC rpc .net c# vb remote procedure call</tags>
