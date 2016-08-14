@@ -10,7 +10,11 @@
     <iconUrl>https://raw.githubusercontent.com/NaxAlpha/LibRPC/master/Nuget/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>High performance, Realtime and lightweight RPC library for .Net Framework and .Net Portable</description>
-    <releaseNotes>Added Documentation</releaseNotes>
+    <releaseNotes>
+      Alpha 0.8
+      Added Support for Void Funcions
+      Added TCP Test
+    </releaseNotes>
     <copyright>Copyright (C) Nauman Mustafa</copyright>
     <tags>LibRPC rpc .net c# vb remote procedure call</tags>
     

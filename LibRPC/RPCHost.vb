@@ -103,7 +103,9 @@ Public Class RPCHost
 					Throw New RPCHostException("Opcode Handler not found: " + opCode.ToString())
 				End If
 
-				Dim paramTypes = code.GetMethodInfo().GetParameters().
+				Dim method = code.GetMethodInfo()
+
+				Dim paramTypes = method.GetParameters().
 					Select(Function(p) p.ParameterType).ToArray()
 
 				Dim args(paramTypes.Length - 1) As Object
@@ -111,7 +113,13 @@ Public Class RPCHost
 					args(i) = Deserialize(paramTypes(i))
 				Next
 
-				Dim out = code.DynamicInvoke(args.ToArray())
+				Dim out As Object
+
+				If method.ReturnType IsNot GetType(Void) Then
+					out = code.DynamicInvoke(args.ToArray())
+				Else
+					out = True
+				End If
 
 				SyncLock Output
 					Output.Write(CShort(0))
@@ -153,6 +161,16 @@ Public Class RPCHost
 	End Function
 
 	''' <summary>
+	''' Calls function with void return type
+	''' </summary>
+	''' <param name="opCode"></param>
+	''' <param name="args"></param>
+	Public Sub [Call](opCode As Short, ParamArray args() As Object)
+		Me.Call(Of Boolean)(opCode, args)
+	End Sub
+
+
+	''' <summary>
 	''' Performs a remote procedure call asynchronously
 	''' </summary>
 	''' <typeparam name="T"></typeparam>
@@ -160,7 +178,17 @@ Public Class RPCHost
 	''' <param name="args"></param>
 	''' <returns></returns>
 	Public Async Function CallAsync(Of T)(opCode As Short, ParamArray args() As Object) As Task(Of T)
-		Return Await Task.Run(Function() [Call](Of T)(opCode, args))
+		Return Await Task.Run(Function() Me.Call(Of T)(opCode, args))
+	End Function
+
+	''' <summary>
+	''' Performs a remote procedure call asynchronously
+	''' </summary>
+	''' <param name="opCode"></param>
+	''' <param name="args"></param>
+	''' <returns></returns>
+	Public Async Function CallAsync(opCode As Short, ParamArray args() As Object) As Task
+		Await Task.Run(Sub() Me.Call(opCode, args))
 	End Function
 
 #If DESKTOP Then
@@ -168,10 +196,10 @@ Public Class RPCHost
 	''' <summary>
 	''' Creates a Proxy for calling remote functions using OOP manner
 	''' </summary>
-	''' <typeparam name="T">Interface type which contains functions with attribute RPCAttribute</typeparam>
+	''' <typeparam name="TInterface">Interface type which contains functions with attribute RPCAttribute</typeparam>
 	''' <returns></returns>
-	Public Function CreateProxy(Of T)() As T
-		Return MetaHost.BuildCaller(Of T)(Me)
+	Public Function CreateProxy(Of TInterface)() As TInterface
+		Return MetaHost.BuildCaller(Of TInterface)(Me)
 	End Function
 
 #End If
