@@ -1,5 +1,6 @@
 ﻿Imports System.Net.Sockets
 Imports System.Windows.Forms
+Imports LibRPC.Basic
 
 Public Class Client
 

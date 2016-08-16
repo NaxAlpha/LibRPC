@@ -9,13 +9,13 @@
     <Import_RootNamespace>LibRPC</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ExceptionEventHandler.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)MetaHost.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)MetaHostException.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)RPCAttribute.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)RPCHost.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)RPCHostException.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)SerializationException.vb" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\ExceptionEventHandler.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\MetaHost.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\MetaHostException.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\RPCAttribute.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\RPCHost.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\RPCHostException.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\SerializationException.vb" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\Utils.vb" />
   </ItemGroup>
 </Project>

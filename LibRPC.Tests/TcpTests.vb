@@ -1,10 +1,7 @@
-﻿Imports System.IO
-Imports System.IO.Pipes
-Imports System.Net
+﻿Imports System.Net
 Imports System.Net.Sockets
-Imports System.Text
 Imports System.Threading
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports LibRPC.Basic
 
 <TestClass()>
 Public Class TcpTests
